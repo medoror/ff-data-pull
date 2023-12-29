@@ -1,9 +1,8 @@
 import unittest
 from unittest.mock import patch, MagicMock
 from league_data_transformer import LeagueDataTransformer
-import json
-from full_player1_stats import p1_stats
-from full_player2_stats import p2_stats
+from fixtures.full_player1_stats import p1_stats
+from fixtures.full_player2_stats import p2_stats
 
 
 class TestLeagueDataTransformer(unittest.TestCase):
