@@ -7,42 +7,34 @@ from fixtures.full_player2_stats import p2_stats
 
 class TestLeagueDataTransformer(unittest.TestCase):
 
-    @patch('espn_api.football.League')
-    def setUp(self, mock_league):
-        mock_player1 = MagicMock()
-        mock_player1.points = 12
-        mock_player1.onTeamId = 8
-        mock_player1.position = 'QB'
-        mock_player1.slot_position = 'OP'
-        mock_player1.stats = p1_stats
+    def setUp(self):
+        mock_player1 = self.generate_player_mock(12, 8, 'QB', 'OP', p1_stats)
+        mock_player2 = self.generate_player_mock(114, 6, 'TE', 'BE', p2_stats)
 
-        mock_player2 = MagicMock()
-        mock_player2.points = 114
-        mock_player2.onTeamId = 6
-        mock_player2.position = 'TE'
-        mock_player2.slot_position = 'BE'
-        mock_player2.stats = p2_stats
-
-        # Create the mock player objects
         mock_players_home = [mock_player1]
         mock_players_away = [mock_player2]
 
-        # Create the mock box score objects
         mock_box_score_home = MagicMock()
         mock_box_score_away = MagicMock()
 
         mock_box_score_home.home_lineup = mock_players_home
         mock_box_score_away.away_lineup = mock_players_away
 
-        # Create the mock league object
         mock_league = MagicMock()
 
-        # Define the behavior for the box_scores method
-        # to return our mock box score object
         mock_league.box_scores = MagicMock(return_value=[mock_box_score_home, mock_box_score_away])
 
-        # Lounge mock league object into the class we're testing
         self.transformer = LeagueDataTransformer(mock_league, 12)
+
+    def generate_player_mock(self, points, onTeamId, position, slot_position, stats):
+        mock_player = MagicMock()
+        mock_player.points = points
+        mock_player.onTeamId = onTeamId
+        mock_player.position = position
+        mock_player.slot_position = slot_position
+        mock_player.stats = stats
+
+        return mock_player
 
     def test_process_player_stats_returns_empty_dict_when_no_stats(self):
         self.assertEqual(self.transformer.process_player_stats({}), {})
@@ -54,39 +46,23 @@ class TestLeagueDataTransformer(unittest.TestCase):
     def test_generate_scoring_data_no_player_processing_if_no_team_id_is_associated(self):
         bad_team_id = 0
 
-        mock_player1 = MagicMock()
-        mock_player1.points = 12
-        mock_player1.onTeamId = bad_team_id
-        mock_player1.position = 'QB'
-        mock_player1.slot_position = 'OP'
-        mock_player1.stats = p1_stats
+        mock_player1 = self.generate_player_mock(12, bad_team_id, 'QB', 'OP', p1_stats)
 
-        mock_player2 = MagicMock()
-        mock_player2.points = 114
-        mock_player2.onTeamId = 6
-        mock_player2.position = 'TE'
-        mock_player2.slot_position = 'BE'
-        mock_player2.stats = p2_stats
+        mock_player2 = self.generate_player_mock(114, 6, 'TE', 'BE', p2_stats)
 
-        # Create the mock player objects
         mock_players_home = [mock_player1]
         mock_players_away = [mock_player2]
 
-        # Create the mock box score objects
         mock_box_score_home = MagicMock()
         mock_box_score_away = MagicMock()
 
         mock_box_score_home.home_lineup = mock_players_home
         mock_box_score_away.away_lineup = mock_players_away
 
-        # Create the mock league object
         mock_league = MagicMock()
 
-        # Define the behavior for the box_scores method
-        # to return our mock box score object
         mock_league.box_scores = MagicMock(return_value=[mock_box_score_home, mock_box_score_away])
 
-        # Lounge mock league object into the class we're testing
         transformer = LeagueDataTransformer(mock_league, 12)
 
         self.assertEqual(transformer.generate_scoring_data(),

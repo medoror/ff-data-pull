@@ -1,6 +1,7 @@
 import json
-class LeagueDataTransformer:
 
+
+class LeagueDataTransformer:
     def __init__(self, league, current_week):
         self.league = league
         self.current_week = current_week
@@ -9,13 +10,14 @@ class LeagueDataTransformer:
         box_scores = self.league.box_scores(self.current_week)
         payload = []
         for box_score in box_scores:
-            self.extract_team_data(box_score.home_lineup, payload)
-            self.extract_team_data(box_score.away_lineup, payload)
+            payload.extend(self.extract_team_data(box_score.home_lineup))
+            payload.extend(self.extract_team_data(box_score.away_lineup))
 
         print(json.dumps(payload, indent=4))
         return payload
 
-    def extract_team_data(self, team, payload):
+    def extract_team_data(self, team):
+        payload = []
         for player in team:
             if player.onTeamId == 0:
                 continue
@@ -25,6 +27,7 @@ class LeagueDataTransformer:
             slot_position = player.slot_position
             position = player.position
             payload.append((points, team_id, stats, slot_position, position))
+        return payload
 
     def process_player_stats(self, json_payload):
         if not json_payload:
