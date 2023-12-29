@@ -1,6 +1,5 @@
 import psycopg
 import json
-from psycopg import sql
 
 
 class PostgresApi:
@@ -14,8 +13,8 @@ class PostgresApi:
         cur = conn.cursor()
 
         cur.execute("""
-        CREATE TYPE player_position AS ENUM ('QB', 'RB', 'WR', 'TE', 'K', 'OP', 'D/ST');
-        CREATE TYPE slot_position AS ENUM ('QB', 'RB', 'WR', 'TE', 'K', 'D/ST', 'BE', 'IR', 'RB/WR/TE');
+        CREATE TYPE player_position AS ENUM ('QB', 'RB', 'WR', 'TE', 'K', 'D/ST');
+        CREATE TYPE slot_position AS ENUM ('QB', 'RB', 'WR', 'TE', 'K', 'D/ST', 'BE', 'IR', 'OP', 'RB/WR/TE');
 
               CREATE TABLE fantasy_football_data (
                 data_id serial primary key,
