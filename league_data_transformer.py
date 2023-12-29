@@ -5,18 +5,20 @@ class LeagueDataTransformer:
         self.league = league
         self.current_week = current_week
 
-    def convert_week_payload(self):
+    def generate_scoring_data(self):
         box_scores = self.league.box_scores(self.current_week)
         payload = []
         for box_score in box_scores:
             self.extract_team_data(box_score.home_lineup, payload)
             self.extract_team_data(box_score.away_lineup, payload)
 
+        print(json.dumps(payload, indent=4))
         return payload
 
     def extract_team_data(self, team, payload):
         for player in team:
-            # team_name = player.name
+            if player.onTeamId == 0:
+                continue
             team_id = player.onTeamId
             points = player.points
             stats = self.process_player_stats(player.stats)
@@ -25,6 +27,8 @@ class LeagueDataTransformer:
             payload.append((points, team_id, stats, slot_position, position))
 
     def process_player_stats(self, json_payload):
+        if not json_payload:
+            return {}
         json_payload = json_payload[self.current_week]
         keys_to_remove = ['projected_breakdown', 'projected_avg_points', 'projected_points', 'avg_points']
 
