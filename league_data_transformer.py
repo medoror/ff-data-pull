@@ -13,7 +13,7 @@ class LeagueDataTransformer:
             payload.extend(self.extract_team_data(box_score.home_lineup))
             payload.extend(self.extract_team_data(box_score.away_lineup))
 
-        print(json.dumps(payload, indent=4))
+        # print(json.dumps(payload, indent=4))
         return payload
 
     def extract_team_data(self, team):
@@ -35,7 +35,6 @@ class LeagueDataTransformer:
         json_payload = json_payload[self.current_week]
         keys_to_remove = ['projected_breakdown', 'projected_avg_points', 'projected_points', 'avg_points']
 
-        # using dictionary comprehension to construct new dictionary
         cleaned_payload = {k: v for k, v in json_payload.items() if k not in keys_to_remove}
 
         return cleaned_payload

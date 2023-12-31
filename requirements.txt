@@ -1,2 +1,3 @@
 psycopg[binary]
 espn-api
+python-dotenv

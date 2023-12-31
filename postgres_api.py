@@ -1,5 +1,8 @@
 import psycopg
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 class PostgresApi:

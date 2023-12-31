@@ -1,11 +1,15 @@
+import os
+
 from espn_api_client import ESPNApiClient
 from league_data_transformer import LeagueDataTransformer
 from postgres_api import PostgresApi
 
 if __name__ == '__main__':
+    database_url = os.getenv("DATABASE_URL")
+
     current_week = 7
 
-    postgres_api = PostgresApi()
+    postgres_api = PostgresApi(database_url)
     postgres_api.delete_table()
     postgres_api.create_table()
 
@@ -17,10 +21,6 @@ if __name__ == '__main__':
 
     payload = league_data.generate_scoring_data()
     postgres_api.insert_fantasy_football_data(payload)
-
-    # should do this in the docker image once
-    # payload = league_data.generate_team_data()
-    # postgres_api.insert_team_data
 
 
     # print(league.box_scores(12)[0].home_lineup[0])
