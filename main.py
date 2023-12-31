@@ -6,6 +6,8 @@ from postgres_api import PostgresApi
 
 if __name__ == '__main__':
     database_url = os.getenv("DATABASE_URL")
+    league_year = os.getenv("LEAGUE_YEAR")
+    league_id = os.getenv("LEAGUE_ID")
 
     current_week = 7
 
@@ -13,7 +15,7 @@ if __name__ == '__main__':
     postgres_api.delete_table()
     postgres_api.create_table()
 
-    espn_api = ESPNApiClient(league_year=2023, league_id=973157822)
+    espn_api = ESPNApiClient(league_year=league_year, league_id=league_id)
 
     league = espn_api.get_league_data()
 

@@ -7,7 +7,7 @@ load_dotenv()
 
 class PostgresApi:
 
-    def __init__(self, database_url="postgresql://postgres:example@localhost:5432/michaeledoror"):
+    def __init__(self, database_url):
         self.database_url = database_url
 
     def create_table(self):
