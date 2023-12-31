@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
     postgres_api = PostgresApi(database_url)
     postgres_api.delete_table()
-    postgres_api.create_table()
+    # postgres_api.create_table()
 
     espn_api = ESPNApiClient(league_year=league_year, league_id=league_id)
 

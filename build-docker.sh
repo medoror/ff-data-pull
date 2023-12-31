@@ -4,4 +4,4 @@
 # Usage: ./build-docker.sh
 
 # build the docker image
-docker build -t medoror/ff_data_pull:1.0 .
+docker build -t medoror/ff-data-pull:1.0 .
