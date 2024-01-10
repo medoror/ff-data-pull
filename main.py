@@ -1,4 +1,5 @@
 import os
+import sys
 
 from espn_api_client import ESPNApiClient
 from league_data_transformer import LeagueDataTransformer
@@ -6,8 +7,8 @@ from postgres_api import PostgresApi
 
 if __name__ == '__main__':
     database_url = os.getenv("DATABASE_URL")
-    league_year = os.getenv("LEAGUE_YEAR")
-    league_id = os.getenv("LEAGUE_ID")
+    league_year = int(os.getenv("LEAGUE_YEAR"))
+    league_id = int(os.getenv("LEAGUE_ID"))
 
     current_week = 7
 
@@ -23,6 +24,8 @@ if __name__ == '__main__':
 
     payload = league_data.generate_scoring_data()
     postgres_api.insert_fantasy_football_data(payload)
+
+    sys.exit(0)
 
 
     # print(league.box_scores(12)[0].home_lineup[0])
